@@ -1,0 +1,45 @@
+
+- name: install OpenSMTPd package
+  apt: pkg=opensmtpd
+ 
+- name: configure default aliases
+  lineinfile:
+    dest=/etc/aliases
+    regexp='^([#\s]*)(root:).*'
+    line='\2 {{ opensmtpd_root_alias }}'
+    backrefs=yes
+    insertafter=EOF
+  notify: opensmtpd restart
+  when: opensmtpd_root_alias is defined
+
+# The default OpenSMTPd is pretty secure by itsef.
+# The modification done here forces aliases to be routed to an fully
+# qualified (existing?) recipient and only relay mail from local
+# connections.
+- name: configure OpenSMTPd as a satellite
+  lineinfile:
+    dest=/etc/smtpd.conf
+    regexp='^{{item.from}}$'
+    line='{{item.to}}'
+    backrefs=yes
+  notify: opensmtpd restart
+  with_items:
+    - from: 'accept for local alias <aliases> deliver to mbox'
+      to:   'accept from local for local alias <aliases>'
+    - from: 'accept for any relay'
+      to:   'accept from local for any relay'
+
+- name: configure OpenSMTPd with a smarthost
+  lineinfile:
+    dest=/etc/smtpd.conf
+    regexp='^{{item.from}}$'
+    line='{{item.to}}'
+    backrefs=yes
+  notify: opensmtpd restart
+  with_items:
+    - to:   'accept from local for any relay via {{ opensmtpd_smarthost }}'
+      from: 'accept from local for any relay'
+  when: opensmtpd_smarthost is defined and opensmtpd_smarthost != ""
+
+#- include: munin.yml
+

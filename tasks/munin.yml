@@ -1,0 +1,21 @@
+
+- name: copy opensmtpd munin plugins
+  notify: munin-node restart
+  copy:
+    src='{{item.src}}'
+    dest='/{{item.dest|default(item.src)}}'
+    mode='{{item.mode|default(0755)}}'
+  with_items:
+    - { src: etc/munin/scripts/opensmtpd_scheduler }
+    - { src: etc/munin/scripts/opensmtpd_queue }
+    - { src: etc/munin/plugin-conf.d/opensmtpd, mode: '0644' }
+
+- name: enable opensmtpd munin plugins
+  munin_plugin:
+    name: '{{ item.name }}'
+    src: '{{ item.src|default(item.name) }}'
+  notify: munin-node restart
+  with_items:
+    - { name: opensmtpd_scheduler }
+    - { name: opensmtpd_queue }
+

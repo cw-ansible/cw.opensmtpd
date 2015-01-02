@@ -1,0 +1,69 @@
+#!/bin/sh
+# -*- sh -*-
+
+: << =cut
+
+=head1 NAME
+
+opensmtpd_queue - Plugin to monitor opensmtpd_queue
+
+=head1 CONFIGURATION
+
+ [opensmtpd]
+    env.smtpctl /usr/sbin/smtpctl
+
+=head1 AUTHOR
+
+Unknown.
+
+=head1 LICENSE
+
+Unknown.
+
+=head1 MAGIC MARKERS
+
+=begin comment
+
+These magic markers are used by munin-node-configure when installing
+munin-node.
+
+=end comment
+
+ #%# family=auto
+ #%# capabilities=autoconf
+
+=cut
+
+SMTPCTL=${smtpctl:-"/usr/sbin/smtpctl"}
+
+. $MUNIN_LIBDIR/plugins/plugin.sh
+
+case $1 in
+	autoconf|detect)
+		if [ -f $SMTPCTL] ; then
+			echo yes
+			exit 0
+		else
+			echo "no (smtpctl not found)"
+			exit 0
+		fi
+	;;
+
+	config)
+		echo graph_title OpenSMTPd queue stats
+		echo graph_vlabel mails in queue
+		echo graph_category opensmtpd
+		echo queue.label queue
+		echo queue.critical 2
+		echo queue.max 100
+
+		print_warning queue
+		print_critical queue
+
+		exit 0
+	;;
+
+esac
+
+echo queue.value `($SMTPCTL show stats | grep scheduler.envelope= | cut -d\= -f2)`
+

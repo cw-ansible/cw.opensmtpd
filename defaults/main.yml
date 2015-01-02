@@ -1,0 +1,24 @@
+---
+
+## Recipient for all mail sent to root.
+# is value is set to /etc/aliases/
+#
+# opensmtpd_root_alias: john.doe@example.com
+
+
+## Smarthost to use.
+# Should be suitable for "relay via" directive from smtpd.conf
+# Examples:
+#   - smtp://mx1.example.org
+#   - smtp://mx1.example.org:4321
+#   - lmtp://localhost:2026
+#   - tls://mx1.example.org
+#   - smtps://mx1.example.org
+#   - secure://mx1.example.org
+#   - tls+auth://label@mx.example.org
+#   - smtps+auth://label@mx.example.org
+#   - secure+auth://label@mx.example.org
+#
+# See "relay via" in smtpd.conf(5) for details.
+#
+# opensmtpd_smarthost: "smtp://mx1.example.com"

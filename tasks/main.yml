@@ -1,0 +1,4 @@
+---
+
+- include: opensmtpd.yml
+  when: ansible_lsb.codename not in [ 'squeeze' ]

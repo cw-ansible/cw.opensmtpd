@@ -1,0 +1,73 @@
+#!/bin/sh
+# -*- sh -*-
+
+: << =cut
+
+=head1 NAME
+
+opensmtpd_scheduler - Plugin to monitor opensmtpd_scheduler
+
+=head1 CONFIGURATION
+
+[opensmtpd]
+env.smtpctl /usr/sbin/smtpctl
+
+=head1 AUTHOR
+
+Unknown.
+
+=head1 LICENSE
+
+Unknown.
+
+=head1 MAGIC MARKERS
+
+=begin comment
+
+These magic markers are used by munin-node-configure when installing
+munin-node.
+
+=end comment
+
+#%# family=auto
+#%# capabilities=autoconf
+
+=cut
+
+SMTPCTL=${smtpctl:-"/usr/sbin/smtpctl"}
+
+. $MUNIN_LIBDIR/plugins/plugin.sh
+
+case $1 in
+	autoconf|detect)
+		if [ -f $SMTPCTL] ; then
+			echo yes
+			exit 0
+		else
+			echo "no (smtpctl not found)"
+			exit 0
+		fi
+	;;
+
+	config)
+		echo graph_title OpenSMTPd stats
+		echo graph_vlabel mails / second
+		echo graph_category opensmtpd
+
+		for field in permfail tempfail ok; do
+			echo "$field.label $field"
+			echo "$field.type DERIVE"
+			echo "$field.min 0"
+			print_warning $field
+			print_critical $field
+		done
+
+		exit 0
+	;;
+
+esac
+
+echo permfail.value `($SMTPCTL show stats | (grep scheduler.delivery.permfail= || echo scheduler.delivery.permfail=0) | cut -d\= -f2)`
+echo tempfail.value `($SMTPCTL show stats | (grep scheduler.delivery.tempfail= || echo scheduler.delivery.tempfail=0) | cut -d\= -f2)`
+echo ok.value `($SMTPCTL show stats | (grep scheduler.delivery.ok= || echo scheduler.delivery.ok=0) | cut -d\= -f2)`
+
