@@ -6,7 +6,10 @@ virtualenv:
   system_site_packages: True
 
 before_install: True
-install: True
+# OpenSMTPd in included in Ubuntu Trusty only.
+install:
+  - 'echo "deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe" | sudo tee /etc/apt/sources.list.d/trusty.list'
+  - 'sudo apt-get -qq update'
 
 script:
   - 'git clone --depth 1 https://github.com/nickjj/rolespec'
