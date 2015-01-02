@@ -7,8 +7,12 @@ virtualenv:
 
 before_install: True
 # OpenSMTPd in included in Ubuntu Trusty only.
+# install it and remove any trusty reference to not interfere with other packages.
 install:
   - 'echo "deb http://us.archive.ubuntu.com/ubuntu/ trusty main universe" | sudo tee /etc/apt/sources.list.d/trusty.list'
+  - 'sudo apt-get -qq update'
+  - 'sudo apt-get -yq install -t trusty opensmtpd'
+  - 'sudo rm -f /etc/apt/sources.list.d/trusty.list'
   - 'sudo apt-get -qq update'
 
 script:
