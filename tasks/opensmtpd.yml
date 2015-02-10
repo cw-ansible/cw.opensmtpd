@@ -1,7 +1,9 @@
 
 - name: install OpenSMTPd package
-  apt: pkg=opensmtpd
- 
+  apt: pkg='{{ item }}' update_cache=yes install_recommends=no cache_valid_time=3600
+  with_items:
+    - opensmtpd
+    - heirloom-mailx
 - name: configure default aliases
   lineinfile:
     dest=/etc/aliases
