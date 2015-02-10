@@ -4,6 +4,17 @@
   with_items:
     - opensmtpd
     - heirloom-mailx
+    
+- name: Add command aliases
+  file:
+    src: '{{ item.src }}'
+    dest: '{{item.dest}}'
+    state: link
+  with_items:
+    - { src: /usr/sbin/smtpctl, dest: /usr/sbin/mailq }
+    - { src: /usr/sbin/sendmail, dest: /usr/lib/sendmail }
+
+  
 - name: configure default aliases
   lineinfile:
     dest=/etc/aliases
