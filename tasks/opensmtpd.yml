@@ -22,7 +22,7 @@
     line='\2 {{ opensmtpd_root_alias }}'
     backrefs=yes
     insertafter=EOF
-  notify: opensmtpd restart
+  notify: makemap /etc/aliases
   when: opensmtpd_root_alias is defined
 
 # The default OpenSMTPd is pretty secure by itsef.

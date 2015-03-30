@@ -2,3 +2,7 @@
 
 - name: opensmtpd restart
   service: name=opensmtpd state=restarted
+
+- name: makemap /etc/aliases
+  command:
+    makemap /etc/aliases
