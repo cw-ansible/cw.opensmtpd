@@ -1,0 +1,11 @@
+---
+
+- name: Add OpenSMTPd apt-key
+  apt_key:
+    url: '{{ opensmtpd_debian_apt_key_url}}'
+    id: '{{ opensmtpd_debian_apt_key_id}}'
+
+- name: Add OpenSMTPd repository
+  apt_repository:
+    repo: 'deb {{ opensmtpd_debian_apt_repository }} {{ opensmtpd_debian_apt_codename }} {{ opensmtpd_debian_apt_components | join(" ") }}'
+

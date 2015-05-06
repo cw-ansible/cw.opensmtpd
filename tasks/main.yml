@@ -2,4 +2,3 @@
 
 # OpenSMTPd is not (yet) present in Debian
 - include: opensmtpd.yml
-  when: ansible_lsb.codename not in [ 'squeeze', 'wheezy', 'jessie' ]

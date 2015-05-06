@@ -1,3 +1,7 @@
+---
+
+- include: debian.yml
+  when: ansible_lsb.id == 'Debian'
 
 - name: install OpenSMTPd package
   apt: pkg='{{ item }}' update_cache=yes install_recommends=no cache_valid_time=3600

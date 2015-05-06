@@ -22,3 +22,24 @@
 # See "relay via" in smtpd.conf(5) for details.
 #
 # opensmtpd_smarthost: "smtp://mx1.example.com"
+
+
+## OpenSMTP is not (yet) in Debian.
+#
+# URL of a debian repository providing OpenSMTPd
+#
+opensmtpd_debian_apt_repository: 'http://debian.chezwam.org/'
+
+opensmtpd_debian_apt_codename: '{{ ansible_lsb.codename }}-cw'
+
+## list of component of the opensmtpd_debian_apt_repository
+opensmtpd_debian_apt_components:
+  - main
+  - contrib
+  - non-free
+
+## Key ID of the opensmtpd_debian_apt_repository
+opensmtpd_debian_apt_key_id: 'F683FE50'
+
+## Key URL of the opensmtpd_debian_apt_repository
+opensmtpd_debian_apt_key_url: 'http://debian.chezwam.org/keys.gpg'
