@@ -24,6 +24,21 @@
 # opensmtpd_smarthost: "smtp://mx1.example.com"
 
 
+## OpenSMTP is not in all Ubuntu
+#
+
+## Key ID of the opensmtpd_ubuntu_apt_repository
+opensmtpd_ubuntu_apt_key_id: 'F2F208CC92100D58'
+
+## Key URL of the opensmtpd_ubuntu_apt_repository
+opensmtpd_ubuntu_apt_key_url: 'http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x{{ opensmtpd_ubuntu_apt_key_id }}'
+
+## URL of the the repository having opensmtpd
+# Actually only precise is available, since OpenSMTPd is included in Trusty.
+opensmtpd_ubuntu_apt_repository: 'http://ppa.launchpad.net/renard0/backports/ubuntu'
+
+
+
 ## OpenSMTP is not (yet) in Debian.
 #
 # URL of a debian repository providing OpenSMTPd
@@ -37,7 +52,7 @@ opensmtpd_debian_apt_components:
   - main
   - contrib
   - non-free
-
+  
 ## Key ID of the opensmtpd_debian_apt_repository
 opensmtpd_debian_apt_key_id: 'F683FE50'
 

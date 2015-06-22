@@ -1,0 +1,11 @@
+---
+
+- name: Add OpenSMTPd apt-key (ubuntu)
+  apt_key:
+    id: '{{ opensmtpd_ubuntu_apt_key_id}}'
+    url: '{{ opensmtpd_ubuntu_apt_key_url }}'
+
+- name: Add OpenSMTPd repository (ubuntu)
+  apt_repository:
+    repo: 'deb {{ opensmtpd_ubuntu_apt_repository }} {{ ansible_lsb.codename }} main'
+
